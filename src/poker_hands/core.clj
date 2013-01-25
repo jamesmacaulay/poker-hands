@@ -2,11 +2,13 @@
   (:require [clojure.string :as str]))
 
 (defn parse-card
+  "Parses a string like \"11s\" into a card, represented as a two-element vector like [11 :s]"
   [string]
   (let [[_ rank suit] (re-find #"(\d+)(\D+)" (name string))]
     [(Integer/parseInt rank) (keyword suit)]))
 
 (defn hand
+  "Parses a string like \"2h 11s 12c 13d 14s\" into a hand, represented as a list of card vectors"
   [string]
   (map parse-card (str/split string #"\s+")))
 
@@ -31,6 +33,7 @@
          (into (sorted-map-by compare-frequencies)))))
 
 (defn straight?
+  "Returns whether or not a hand is a straight"
   [hand]
   (let [sorted-ranks (-> hand ranks sort)
         first-rank (first sorted-ranks)
@@ -38,6 +41,7 @@
     (= expected sorted-ranks)))
 
 (defn flush?
+  "Returns whether or not a hand is a flush"
   [hand]
   (apply = (suits hand)))
 
@@ -56,12 +60,14 @@
 (def grouped-secondary-score-fn (comp keys n-of-a-kinds))
 
 (defn secondary-score-fn
+  "Different hand categories use different functions to break ties"
   [category]
   (if (#{:one-pair :two-pair :three-of-a-kind :full-house :four-of-a-kind} category)
     grouped-secondary-score-fn
     regular-secondary-score-fn))
 
 (defn hand-category
+  "Returns the category of a hand as a keyword"
   [hand]
   (let [group-sizes (->> (n-of-a-kinds hand)
                          vals
@@ -86,6 +92,7 @@
           :high-card)))
 
 (defn score
+  "Returns the score of a hand as a vector of six numbers in descending order of importance"
   [hand]
   (let [cat (hand-category hand)
         secondary-score (secondary-score-fn cat)
@@ -94,6 +101,7 @@
     (vec (take 6 (concat score-list (repeat 0))))))
 
 (defn beats?
+  "Returns whether hand1 beats hand2"
   [hand1 hand2]
   (pos? (compare (score hand1)
                  (score hand2))))
