@@ -85,15 +85,15 @@
           :else
           :high-card)))
 
-
 (defn score
   [hand]
   (let [cat (hand-category hand)
-        secondary-score (secondary-score-fn cat)]
-    (apply vector
-           (category-rank cat)
-           (secondary-score hand))))
+        secondary-score (secondary-score-fn cat)
+        score-list (cons (category-rank cat)
+                         (secondary-score hand))]
+    (vec (take 6 (concat score-list (repeat 0))))))
 
 (defn beats?
   [hand1 hand2]
-  (pos? (compare (score hand1) (score hand2))))
+  (pos? (compare (score hand1)
+                 (score hand2))))

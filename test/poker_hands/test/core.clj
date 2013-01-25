@@ -73,12 +73,12 @@
            (hand-category (hand "7h 8h 9h 10h 11h"))))))
 
 (deftest score-test
-  (testing "(score hand) returns a vector of score values in decreasing priority"
+  (testing "(score hand) returns a vector of six score values in decreasing priority, padded with 0s"
     (is (= [0 8 6 4 3 2]
            (score (hand "8h 6d 4c 3s 2s"))))
     (is (= [(category-rank :straight) 11 10 9 8 7]
            (score (hand "7h 8d 9c 10s 11s"))))
-    (is (= [(category-rank :one-pair) 9 11 10 7]
+    (is (= [(category-rank :one-pair) 9 11 10 7 0]
            (score (hand "7h 9d 9c 10s 11s"))))))
 
 (deftest beats-test
@@ -91,4 +91,7 @@
                    (hand "7h 8d 9c 10s 11s"))))
     (is (= false
            (beats? (hand "7h 8d 9c 10s 11s")
-                   (hand "7h 8d 9c 10s 11s"))))))
+                   (hand "7h 8d 9c 10s 11s"))))
+    (is (= true
+           (beats? (hand "2d 10s 12c 12d 9h")
+                   (hand "3s 5c 6d 8s 10h"))))))
