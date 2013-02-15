@@ -1,6 +1,6 @@
 # poker-hands
 
-A little library to score poker hands in Clojure, inspired by the good times at [Toronto Coding Dojo](http://www.meetup.com/Toronto-Coding-Dojo/).
+A little library to score [poker hands](http://en.wikipedia.org/wiki/List_of_poker_hands) in Clojure, inspired by the good times at [Toronto Coding Dojo](http://www.meetup.com/Toronto-Coding-Dojo/).
 
 ## Usage
 
