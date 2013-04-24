@@ -92,6 +92,12 @@
     (is (= false
            (beats? (hand "7h 8d 9c 10s 11s")
                    (hand "7h 8d 9c 10s 11s"))))
+ 
     (is (= true
            (beats? (hand "2d 10s 12c 12d 9h")
                    (hand "3s 5c 6d 8s 10h"))))))
+
+(deftest best5-test
+  (testing "(best-hand 5 cards) returns the best 5-card hand"
+    (is (= (hand "13d 7d 13h 7s 7c")
+           (best-hand 5 (hand "3s 3c 13d 7d 13h 7s 7c"))))))

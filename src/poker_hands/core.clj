@@ -1,5 +1,6 @@
 (ns poker-hands.core
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str])
+  (:require [clojure.math.combinatorics :as comb]))
 
 (defn parse-card
   "Parses a string like \"11s\" into a card, represented as a two-element vector like [11 :s]"
@@ -105,3 +106,8 @@
   [hand1 hand2]
   (pos? (compare (score hand1)
                  (score hand2))))
+
+(defn best-hand
+  "Returns the best n card hand from an arbitrary sized vector of cards"
+  [n cards]
+  (reduce #(if (beats? %1 %2) %1 %2) (comb/combinations cards n)))
