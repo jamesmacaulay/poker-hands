@@ -29,8 +29,8 @@
         compare-frequencies (fn [key1 key2]
                               (clojure.core/compare [(freqs key2) key2]
                                                     [(freqs key1) key1]))]
-    (->> freqs
-         (into (sorted-map-by compare-frequencies)))))
+    (into (sorted-map-by compare-frequencies)
+          freqs)))
 
 (defn straight?
   "Returns whether or not a hand is a straight"
@@ -72,24 +72,15 @@
   (let [group-sizes (->> (n-of-a-kinds hand)
                          vals
                          (filter (partial < 1)))]
-    (cond (and (straight? hand) (flush? hand))
-          :straight-flush
-          (= [4] group-sizes)
-          :four-of-a-kind
-          (= [3 2] group-sizes)
-          :full-house
-          (flush? hand)
-          :flush
-          (straight? hand)
-          :straight
-          (= [3] group-sizes)
-          :three-of-a-kind
-          (= [2 2] group-sizes)
-          :two-pair
-          (= [2] group-sizes)
-          :one-pair
-          :else
-          :high-card)))
+    (cond (and (straight? hand) (flush? hand)) :straight-flush
+          (= [4] group-sizes) :four-of-a-kind
+          (= [3 2] group-sizes) :full-house
+          (flush? hand) :flush
+          (straight? hand) :straight
+          (= [3] group-sizes) :three-of-a-kind
+          (= [2 2] group-sizes) :two-pair
+          (= [2] group-sizes) :one-pair
+          :else :high-card)))
 
 (defn score
   "Returns the score of a hand as a vector of six numbers in descending order of importance"
